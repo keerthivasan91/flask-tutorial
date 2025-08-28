@@ -28,7 +28,7 @@ def home():
 
 @app.route('/sample')
 def sample():
-    user = User(id=3, username='keerthivasan',email="jjj@gmail.com")
+    user = User(id=4, username='abc',email="abc.com")
     db.session.add(user)
     db.session.commit()
     return render_template('sample.html')
