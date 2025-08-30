@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>show tables</title>
+</head>
+<body>
+    <div class="details">
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Created At</th>
+            </tr>
+            {% for u in users %}
+            <tr>
+                <td>{{ u[0] }}</td>  
+                <td>{{ u[1] }}</td>  
+                <td>{{ u[2] }}</td>  
+                <td>{{ u[3] }}</td> 
+            </tr>
+            {% endfor %}
+    </table>
+    </div>
+    <br>
+    <div class="div">
+        <button onclick="location.pathname='/'">Home</button>
+    </div>
+</body>
+</html>
