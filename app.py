@@ -1,36 +1,38 @@
-from flask import Flask , render_template 
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template
+import mysql.connector
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/sample'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
 
-class User(db.Model):
-    __tablename__ = 'users'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    
-    def __init__(self, id, username, email):
-        self.id = id
-        self.username = username
-        self.email = email
-    
-    def __repr__(self):
-        return f'<User {self.username}>'
-    
+# Database connection function
+def get_db_connection():
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="sample",
+        auth_plugin='mysql_native_password'
+    )
+    return conn
+
 @app.route('/')
 def home():
     return render_template('demo.html')
 
 @app.route('/sample')
 def sample():
-    user = User(id=4, username='abc',email="abc.com")
-    db.session.add(user)
-    db.session.commit()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Insert user
+    query = "INSERT INTO users (id, username, email, created_at) VALUES (%s, %s, %s, NOW())"
+    values = (7, 'ks', 'ab31.com')
+    cursor.execute(query, values)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
     return render_template('sample.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
