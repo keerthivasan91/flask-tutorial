@@ -36,5 +36,14 @@ def sample():
 
     return render_template('sample.html',id=a,username=b,email=c)
 
+@app.route('/data',methods=['GET'])
+def data():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    d = "select * from users"
+    cursor.execute(d)
+    users = cursor.fetchall()
+    return render_template('data.html', users=users)
+
 if __name__ == "__main__":
     app.run(debug=True)
